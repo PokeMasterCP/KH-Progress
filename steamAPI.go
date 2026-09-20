@@ -9,9 +9,11 @@ import (
 const BASE_URL = "https://api.steampowered.com/ISteamUserStats"
 
 type achievement struct {
-	Name     string `json:"apiname"`
-	Achieved int    `json:"achieved"`
-	icon     string
+	APIName  string `json:"apiname"`
+	Name     string
+	Achieved int `json:"achieved"`
+	Game     string
+	Icon     string
 }
 
 type achievementsResponse struct {
@@ -50,7 +52,7 @@ func GetAchievements(apiKey, steamId string) ([]achievement, error) {
 	}
 	schema := makeSchema(schemaResponse.Game.AvailableGameStats.Achievements)
 
-	achievements = updateAchievementsFromSchema(achievements, schema)
+	achievements = updateAchievementsFromSchema(achievements, schema, makeGameMap())
 	return achievements, nil
 }
 
@@ -78,6 +80,10 @@ func makeRequest[T any](url string) (T, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return result, fmt.Errorf("received non-OK HTTP status: %s", resp.Status)
+	}
+
 	if err := json.UnmarshalRead(resp.Body, &result); err != nil {
 		return result, fmt.Errorf("Error parsing achievements JSON: %v", err)
 	}
@@ -93,15 +99,31 @@ func makeSchema(s []schema) map[string]schema {
 	return schemaMap
 }
 
-func updateAchievementsFromSchema(achievements []achievement, s map[string]schema) []achievement {
+func updateAchievementsFromSchema(achievements []achievement, schema map[string]schema, games map[string]string) []achievement {
 	for i := range achievements {
-		info, ok := s[achievements[i].Name]
-		if !ok {
-			continue
-		}
-
-		achievements[i].Name = info.DisplayName
-		achievements[i].icon = info.Icon
+		achievements[i].Name = schema[achievements[i].APIName].DisplayName
+		achievements[i].Icon = schema[achievements[i].APIName].Icon
+		achievements[i].Game = games[achievements[i].APIName]
 	}
 	return achievements
+}
+
+func makeGameMap() map[string]string {
+	games := []struct {
+		first, last int
+		name        string
+	}{
+		{1, 55, "Kingdom Hearts Final Mix"},
+		{56, 102, "Re:Chain of Memories"},
+		{103, 152, "Kingdom Hearts II Final Mix"},
+		{153, 197, "Birth by Sleep Final Mix"},
+	}
+
+	result := make(map[string]string, 197)
+	for _, game := range games {
+		for n := game.first; n <= game.last; n++ {
+			result[fmt.Sprintf("ACH_%03d", n)] = game.name
+		}
+	}
+	return result
 }

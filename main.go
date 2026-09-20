@@ -27,7 +27,7 @@ func main() {
 	}
 
 	for _, a := range achievements {
-		fmt.Printf("Name: %s, Achieved: %d, Icon: %s\n", a.Name, a.Achieved, a.icon)
+		fmt.Printf("Name: %s, Game: %s, Achieved: %d, Icon: %s\n", a.Name, a.Game, a.Achieved, a.Icon)
 	}
 
 	fmt.Printf("server listening on %s", port)
