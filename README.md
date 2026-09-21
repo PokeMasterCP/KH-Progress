@@ -1,29 +1,50 @@
 # KH Progress
 
-A Kingdom Hearts achievement journal backed by Steam.
+A Kingdom Hearts achievement journal backed by Steam. View your unlocked and locked achievements, filter by game, and track your completion percentage across the HD 1.5 + 2.5 ReMIX collection.
+
+## Configuration
+
+The application requires two environment variables:
+
+| Variable | Description |
+| --- | --- |
+| `API_KEY` | Your Steam Web API key |
+| `STEAM_ID` | Your numeric Steam ID (SteamID64) |
+
+Set them in your shell before running the application:
+
+```sh
+export API_KEY="your-steam-api-key"
+export STEAM_ID="your-steam-id"
+```
 
 ## Run with Docker
+
+```sh
+docker run --rm -p 8080:8080 \
+  -e API_KEY -e STEAM_ID \
+  pokemastercp/kh-progress:latest
+```
+
+To build and run the image from the source code instead:
 
 ```sh
 docker build -t kh-progress .
 docker run --rm -p 8080:8080 -e API_KEY -e STEAM_ID kh-progress
 ```
 
-Set `API_KEY` (your Steam Web API key) and `STEAM_ID` in your shell first.
-Open http://localhost:8080. Achievement data is fetched when the server starts.
+## Run with Go
 
-## Publish to Docker Hub
+With Go 1.27.1 or later installed, run from the project directory:
 
-In the GitHub repository's **Settings → Secrets and variables → Actions**, configure:
+```sh
+go run .
+```
 
-| Type | Name | Value |
-| --- | --- | --- |
-| Variable | `DOCKERHUB_USERNAME` | Docker Hub account used to publish |
-| Secret | `DOCKERHUB_TOKEN` | Docker Hub access token with permission to push |
-| Variable (optional) | `DOCKERHUB_NAMESPACE` | Organization owning the image; defaults to the username |
+## Using the journal
 
-Create a `kh-progress` repository in that Docker Hub namespace with your preferred visibility.
-Pushes to `main` run tests and publish `latest` and `sha-<commit>` image tags.
-The workflow can also be run manually from the Actions tab.
+Open `http://<container-ip>:8080` if the container's IP is reachable from your browser. With the `-p 8080:8080` mapping above, you can use `http://<docker-host-ip>:8080` instead.
 
-`API_KEY` and `STEAM_ID` are runtime settings; they are not needed to build or publish the image.
+Select **All games** or an individual game to update the achievement list and completion percentage.
+
+The application makes two Steam API calls per page load, one for your achievement status and one for achievement names and icons. To get the latest data simply refresh the page.

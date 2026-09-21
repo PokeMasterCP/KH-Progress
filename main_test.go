@@ -1,11 +1,18 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 )
+
+type achievementSourceFunc func() ([]achievement, error)
+
+func (f achievementSourceFunc) GetAchievements() ([]achievement, error) {
+	return f()
+}
 
 func TestAchievementPage(t *testing.T) {
 	tests := []struct {
@@ -42,7 +49,8 @@ func TestAchievementPage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			response := httptest.NewRecorder()
-			newHandler(tt.data).ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/", nil))
+			api := achievementSourceFunc(func() ([]achievement, error) { return tt.data, nil })
+			newHandler(api).ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/", nil))
 			if response.Code != http.StatusOK || response.Header().Get("Content-Type") != "text/html; charset=utf-8" {
 				t.Fatalf("unexpected response: %d %s", response.Code, response.Header().Get("Content-Type"))
 			}
@@ -56,12 +64,57 @@ func TestAchievementPage(t *testing.T) {
 }
 
 func TestUnknownRoutes(t *testing.T) {
-	handler := newHandler(nil)
+	handler := newHandler(achievementSourceFunc(func() ([]achievement, error) {
+		t.Fatal("unknown routes must not fetch achievements")
+		return nil, nil
+	}))
 	for _, path := range []string{"/api/achievements", "/missing", "/index.html"} {
 		response := httptest.NewRecorder()
 		handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, path, nil))
 		if response.Code != http.StatusNotFound {
 			t.Errorf("%s: got %d, want 404", path, response.Code)
 		}
+	}
+}
+
+func TestPageRefreshFetchesLatestAchievements(t *testing.T) {
+	calls := 0
+	handler := newHandler(achievementSourceFunc(func() ([]achievement, error) {
+		calls++
+		return []achievement{{Name: "A journey begins", Achieved: calls - 1}}, nil
+	}))
+	if calls != 0 {
+		t.Fatal("achievements were fetched before a page request")
+	}
+	for _, want := range []string{"0 of 1 achievements unlocked", "1 of 1 achievements unlocked"} {
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/", nil))
+		if response.Code != http.StatusOK || !strings.Contains(response.Body.String(), want) {
+			t.Fatalf("expected fresh stats %q, got status %d: %s", want, response.Code, response.Body.String())
+		}
+	}
+	if calls != 2 {
+		t.Fatalf("got %d fetches for two page loads, want 2", calls)
+	}
+}
+
+func TestPageRecoversAfterSteamError(t *testing.T) {
+	calls := 0
+	handler := newHandler(achievementSourceFunc(func() ([]achievement, error) {
+		calls++
+		if calls == 1 {
+			return nil, errors.New("upstream unavailable")
+		}
+		return []achievement{{Name: "A journey begins", Achieved: 1}}, nil
+	}))
+	response := httptest.NewRecorder()
+	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/", nil))
+	if response.Code != http.StatusInternalServerError || strings.TrimSpace(response.Body.String()) != "Unable to fetch achievements" {
+		t.Fatalf("unexpected error response: %d %s", response.Code, response.Body.String())
+	}
+	response = httptest.NewRecorder()
+	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/", nil))
+	if response.Code != http.StatusOK || !strings.Contains(response.Body.String(), "1 of 1 achievements unlocked") {
+		t.Fatalf("next page load did not recover: %d %s", response.Code, response.Body.String())
 	}
 }

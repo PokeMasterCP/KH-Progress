@@ -36,9 +36,9 @@ type schema struct {
 	Icon        string `json:"icon"`
 }
 
-func GetAchievements(apiKey, steamId string) ([]achievement, error) {
-	schemaURL := buildURL("GetSchemaForGame", apiKey, steamId)
-	statusURL := buildURL("GetPlayerAchievements", apiKey, steamId)
+func (s *steamAPI) GetAchievements() ([]achievement, error) {
+	schemaURL := buildURL("GetSchemaForGame", s.apiKey, s.steamId)
+	statusURL := buildURL("GetPlayerAchievements", s.apiKey, s.steamId)
 
 	achResponse, err := makeRequest[achievementsResponse](statusURL)
 	if err != nil {
