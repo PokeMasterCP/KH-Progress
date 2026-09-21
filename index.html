@@ -1,1 +1,150 @@
-<h1>Hello World!</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101823">
+  <title>Kingdom Hearts · Achievement Journal</title>
+  <style>
+    :root { color-scheme: dark; --bg: #101823; --panel: #17212e; --line: #2c3745; --text: #edf0f3; --muted: #a2aebc; --gold: #e5c687; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: radial-gradient(ellipse at 90% 0, #26344880, transparent 48%), var(--bg); color: var(--text); font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif; font-size: 15px; min-height: 100vh; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    .shell { max-width: 1120px; padding: 0 40px; margin: auto; }
+    header { height: 100px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 13px; font-size: 13px; letter-spacing: .17em; font-weight: 600; }
+    .brand svg { width: 31px; height: 31px; color: var(--gold); }
+    .edition, .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+    main { padding: 62px 0 36px; }
+    .eyebrow { color: var(--gold); margin: 0 0 17px; }
+    h1 { font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif; font-weight: 400; font-size: clamp(38px, 6vw, 58px); letter-spacing: -.045em; margin: 0 0 13px; line-height: 1.1; }
+    .intro { margin: 0; color: var(--muted); line-height: 1.7; }
+    .progress-card { margin: 34px 0 35px; padding: 26px 30px; background: linear-gradient(110deg, #222d3d, #17212e); border: 1px solid #3a4350; border-radius: 6px; display: grid; grid-template-columns: 1fr auto; gap: 17px 30px; position: relative; overflow: hidden; }
+    .progress-card::after { content: '✧'; position: absolute; right: 120px; top: -69px; font-size: 225px; color: #e5c68706; pointer-events: none; }
+    .progress-label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin: 0 0 10px; }
+    #progress-caption { color: var(--muted); font-size: 13px; margin: 0; }
+    .percentage { align-self: center; color: var(--gold); font-family: Palatino, Georgia, serif; font-size: 48px; line-height: 1; letter-spacing: -.04em; }
+    .percentage span { font-family: "Avenir Next", Avenir, sans-serif; font-size: 22px; margin-left: 3px; }
+    progress { grid-column: 1 / -1; width: 100%; height: 5px; border: 0; border-radius: 10px; overflow: hidden; background: #35404d; accent-color: var(--gold); }
+    progress::-webkit-progress-bar { background: #35404d; }
+    progress::-webkit-progress-value { background: var(--gold); transition: width .3s ease; }
+    progress::-moz-progress-bar { background: var(--gold); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 37px; }
+    .filter { background: transparent; border: 1px solid var(--line); color: var(--muted); padding: 11px 16px; border-radius: 4px; font-size: 12px; transition: background .15s, color .15s, border-color .15s; }
+    .filter:hover { color: var(--text); border-color: #718095; background: #ffffff05; }
+    .filter[aria-pressed="true"] { color: #17212e; background: var(--gold); border-color: var(--gold); font-weight: 600; }
+    .list-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 17px; border-bottom: 1px solid var(--line); }
+    h2 { font-family: Palatino, Georgia, serif; font-size: 25px; font-weight: 400; margin: 0; letter-spacing: -.025em; }
+    #list-count { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    #achievements { list-style: none; padding: 0; margin: 0; }
+    .achievement { display: flex; gap: 17px; align-items: center; padding: 19px 5px; border-bottom: 1px solid var(--line); }
+    .icon { width: 52px; height: 52px; flex: 0 0 52px; border-radius: 5px; overflow: hidden; border: 1px solid #465162; background: #253141; display: grid; place-items: center; color: var(--muted); font-size: 25px; }
+    .icon img { width: 100%; height: 100%; object-fit: cover; }
+    .achievement.locked .icon img { filter: grayscale(1); opacity: .5; }
+    .details { flex: 1; min-width: 0; }
+    .details h3 { font-size: 15px; font-weight: 500; margin: 0 0 7px; overflow-wrap: anywhere; }
+    .details p { color: var(--muted); font-size: 11px; margin: 0; letter-spacing: .025em; }
+    .status { display: flex; align-items: center; gap: 7px; color: var(--gold); font-size: 11px; padding-left: 10px; }
+    .status svg { width: 15px; height: 15px; }
+    .locked .status { color: #a2aebc; }
+    .message { padding: 55px 20px; text-align: center; color: var(--muted); line-height: 1.7; }
+    footer { display: flex; justify-content: space-between; gap: 18px; border-top: 1px solid var(--line); margin-top: 36px; padding: 23px 0 30px; font-size: 10px; letter-spacing: .045em; color: var(--muted); }
+    .footer-mark { color: var(--gold); }
+    @media (max-width: 640px) {
+      .shell { padding: 0 21px; } header { height: 78px; } .brand { font-size: 10px; gap: 9px; } .edition { font-size: 8px; letter-spacing: .08em; } main { padding-top: 38px; }
+      .progress-card { padding: 23px 20px; gap: 18px; } .percentage { font-size: 40px; } .filter { padding: 10px 12px; } .filters { margin-bottom: 29px; } .achievement { gap: 12px; padding: 17px 0; } .status { padding-left: 0; } .status span { display: none; } .details h3 { font-size: 14px; } .details p { font-size: 10px; } h2 { font-size: 22px; } footer { flex-direction: column; gap: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 23 3 10l8 6 5-12 5 12 8-6-2 13H5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 27h18" stroke="currentColor" stroke-width="1.4"/></svg>KINGDOM HEARTS</div>
+      <span class="edition">HD 1.5 + 2.5 ReMIX</span>
+    </header>
+    <main>
+      <p class="eyebrow">Your journey, recorded</p>
+      <h1>Achievement journal</h1>
+      <p class="intro">Every world. Every challenge. One step closer to completion.</p>
+      <section class="progress-card" aria-label="Completion progress">
+        <div><p class="progress-label" id="progress-label">Overall completion</p><p id="progress-caption">{{.Completed}} of {{len .Achievements}} achievements unlocked</p></div>
+        <div class="percentage"><b id="percentage" style="font-weight:400">{{.Percentage}}</b><span>%</span></div>
+        <progress id="progress" max="100" value="{{.Percentage}}" aria-label="Achievement completion">{{.Percentage}}%</progress>
+      </section>
+      <nav class="filters" aria-label="Filter achievements by game" id="filters" hidden>
+        <button class="filter" type="button" aria-pressed="true" data-game="">All games</button>
+        <button class="filter" type="button" aria-pressed="false" data-game="Kingdom Hearts Final Mix">KH Final Mix</button>
+        <button class="filter" type="button" aria-pressed="false" data-game="Re:Chain of Memories">Re:Chain of Memories</button>
+        <button class="filter" type="button" aria-pressed="false" data-game="Kingdom Hearts II Final Mix">KH II Final Mix</button>
+        <button class="filter" type="button" aria-pressed="false" data-game="Birth by Sleep Final Mix">Birth by Sleep</button>
+      </nav>
+      <section aria-labelledby="list-title" id="list-section">
+        <div class="list-heading"><h2 id="list-title">All achievements</h2><span id="list-count" role="status" aria-live="polite">{{len .Achievements}} achievements · {{.Percentage}}% complete</span></div>
+        <ul id="achievements">
+          {{range .Achievements}}
+          <li class="achievement{{if ne .Achieved 1}} locked{{end}}" data-game="{{.Game}}" data-achieved="{{.Achieved}}">
+            <div class="icon" aria-hidden="true">{{if .Icon}}<img src="{{.Icon}}" alt="" loading="lazy">{{else}}✧{{end}}</div>
+            <div class="details">
+              <h3>{{or .Name .APIName "Unnamed achievement"}}</h3>
+              <p>{{or .Game "Other achievements"}}</p>
+            </div>
+            <div class="status" aria-label="{{if eq .Achieved 1}}Unlocked{{else}}Locked{{end}}">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                {{if eq .Achieved 1}}<circle cx="8" cy="8" r="6.5"/><path d="m5 8 2 2 4-4"/>
+                {{else}}<rect x="3.5" y="7" width="9" height="7" rx="1.5"/><path d="M5.5 7V4.5a2.5 2.5 0 0 1 5 0V7"/>{{end}}
+              </svg>
+              <span aria-hidden="true">{{if eq .Achieved 1}}Unlocked{{else}}Locked{{end}}</span>
+            </div>
+          </li>
+          {{end}}
+        </ul>
+        <div id="message" class="message" role="status"{{if .Achievements}} hidden{{end}}>No achievements found for this collection.</div>
+      </section>
+      <noscript><p>Enable JavaScript to filter achievements by game.</p></noscript>
+    </main>
+    <footer><span><span class="footer-mark">✧</span> &nbsp; A little progress in every world.</span><span>Achievement data from Steam · Updated when the server starts</span></footer>
+  </div>
+  <script>
+    const $ = id => document.getElementById(id);
+    const rows = [...document.querySelectorAll('#achievements .achievement')];
+    const buttons = [...document.querySelectorAll('#filters button')];
+
+    $('filters').addEventListener('click', event => {
+      const button = event.target.closest('button[data-game]');
+      if (!button) return;
+      const selectedGame = button.dataset.game;
+      let total = 0;
+      let completed = 0;
+      for (const row of rows) {
+        row.hidden = Boolean(selectedGame && row.dataset.game !== selectedGame);
+        if (!row.hidden) {
+          total++;
+          if (row.dataset.achieved === '1') completed++;
+        }
+      }
+      const percent = total ? Math.round(completed / total * 100) : 0;
+      buttons.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+      $('percentage').textContent = percent;
+      $('progress').value = percent;
+      $('progress').textContent = percent + '%';
+      $('progress-label').textContent = selectedGame ? 'Game completion' : 'Overall completion';
+      $('progress-caption').textContent = `${completed} of ${total} achievements unlocked`;
+      $('list-title').textContent = selectedGame || 'All achievements';
+      $('list-count').textContent = `${total} achievements · ${percent}% complete`;
+      $('message').hidden = total > 0;
+      $('message').textContent = 'No achievements found for ' + (selectedGame || 'this collection') + '.';
+    });
+    $('filters').hidden = false;
+
+    document.querySelectorAll('.icon img').forEach(img => {
+      const fallback = () => { img.parentElement.textContent = '✧'; };
+      img.addEventListener('error', fallback);
+      if (img.complete && img.naturalWidth === 0) fallback();
+    });
+  </script>
+</body>
+</html>

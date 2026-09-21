@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"embed"
 	"fmt"
+	"html/template"
 	"log"
+	"math"
 	"net/http"
 	"os"
 )
@@ -14,6 +17,12 @@ const (
 
 //go:embed index.html
 var indexHTML embed.FS
+
+type pageData struct {
+	Achievements []achievement
+	Completed    int
+	Percentage   int
+}
 
 func main() {
 	apiKey, steamId, err := validateEnvVars()
@@ -26,18 +35,39 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, a := range achievements {
-		fmt.Printf("Name: %s, Game: %s, Achieved: %d, Icon: %s\n", a.Name, a.Game, a.Achieved, a.Icon)
-	}
+	log.Printf("server listening on %s", port)
 
-	fmt.Printf("server listening on %s", port)
-
-	s := http.NewServeMux()
-	s.Handle("/", http.FileServer(http.FS(indexHTML)))
+	s := newHandler(achievements)
 
 	if err := http.ListenAndServe(port, s); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func newHandler(achievements []achievement) http.Handler {
+	tmpl := template.Must(template.ParseFS(indexHTML, "index.html"))
+	data := pageData{Achievements: achievements}
+	for _, a := range achievements {
+		if a.Achieved == 1 {
+			data.Completed++
+		}
+	}
+	if len(achievements) > 0 {
+		data.Percentage = int(math.Round(float64(data.Completed) / float64(len(achievements)) * 100))
+	}
+
+	s := http.NewServeMux()
+	s.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		var page bytes.Buffer
+		if err := tmpl.Execute(&page, data); err != nil {
+			log.Printf("error rendering achievements: %v", err)
+			http.Error(w, "Unable to render achievement journal", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		_, _ = w.Write(page.Bytes())
+	})
+	return s
 }
 
 func validateEnvVars() (string, string, error) {
