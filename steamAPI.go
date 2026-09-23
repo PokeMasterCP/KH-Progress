@@ -4,16 +4,34 @@ import (
 	"encoding/json/v2"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 const BASE_URL = "https://api.steampowered.com/ISteamUserStats"
 
 type achievement struct {
-	APIName  string `json:"apiname"`
-	Name     string
-	Achieved int `json:"achieved"`
-	Game     string
-	Icon     string
+	APIName     string `json:"apiname"`
+	Achieved    int    `json:"achieved"`
+	UnlockTime  int64  `json:"unlocktime"`
+	Name        string `json:"-"`
+	Description string `json:"-"`
+	Hidden      bool   `json:"-"`
+	Game        string `json:"-"`
+	GameKey     string `json:"-"`
+	Icon        string `json:"-"`
+	IconGray    string `json:"-"`
+}
+
+func (a achievement) Unlocked() bool {
+	return a.Achieved == 1
+}
+
+// UnlockDate is the zero time when Steam has no unlock timestamp.
+func (a achievement) UnlockDate() time.Time {
+	if !a.Unlocked() || a.UnlockTime <= 0 {
+		return time.Time{}
+	}
+	return time.Unix(a.UnlockTime, 0).UTC()
 }
 
 type achievementsResponse struct {
@@ -33,7 +51,24 @@ type schemaResponse struct {
 type schema struct {
 	Name        string `json:"name"`
 	DisplayName string `json:"displayName"`
+	Description string `json:"description"`
+	Hidden      int    `json:"hidden"`
 	Icon        string `json:"icon"`
+	IconGray    string `json:"icongray"`
+}
+
+// game groups the collection's achievements by their ACH_### number range.
+type game struct {
+	Key         string
+	Name        string
+	first, last int
+}
+
+var games = []game{
+	{"kh1", "Kingdom Hearts Final Mix", 1, 55},
+	{"recom", "Re:Chain of Memories", 56, 102},
+	{"kh2", "Kingdom Hearts II Final Mix", 103, 152},
+	{"bbs", "Birth by Sleep Final Mix", 153, 197},
 }
 
 func (s *steamAPI) GetAchievements() ([]achievement, error) {
@@ -99,30 +134,26 @@ func makeSchema(s []schema) map[string]schema {
 	return schemaMap
 }
 
-func updateAchievementsFromSchema(achievements []achievement, schema map[string]schema, games map[string]string) []achievement {
+func updateAchievementsFromSchema(achievements []achievement, schema map[string]schema, games map[string]game) []achievement {
 	for i := range achievements {
-		achievements[i].Name = schema[achievements[i].APIName].DisplayName
-		achievements[i].Icon = schema[achievements[i].APIName].Icon
-		achievements[i].Game = games[achievements[i].APIName]
+		s := schema[achievements[i].APIName]
+		achievements[i].Name = s.DisplayName
+		achievements[i].Description = s.Description
+		achievements[i].Hidden = s.Hidden == 1
+		achievements[i].Icon = s.Icon
+		achievements[i].IconGray = s.IconGray
+		g := games[achievements[i].APIName]
+		achievements[i].Game = g.Name
+		achievements[i].GameKey = g.Key
 	}
 	return achievements
 }
 
-func makeGameMap() map[string]string {
-	games := []struct {
-		first, last int
-		name        string
-	}{
-		{1, 55, "Kingdom Hearts Final Mix"},
-		{56, 102, "Re:Chain of Memories"},
-		{103, 152, "Kingdom Hearts II Final Mix"},
-		{153, 197, "Birth by Sleep Final Mix"},
-	}
-
-	result := make(map[string]string, 197)
+func makeGameMap() map[string]game {
+	result := make(map[string]game, 197)
 	for _, game := range games {
 		for n := game.first; n <= game.last; n++ {
-			result[fmt.Sprintf("ACH_%03d", n)] = game.name
+			result[fmt.Sprintf("ACH_%03d", n)] = game
 		}
 	}
 	return result
