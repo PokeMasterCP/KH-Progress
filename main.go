@@ -40,6 +40,7 @@ type pageData struct {
 type gameProgress struct {
 	Key          string
 	Name         string
+	Short        string
 	Total        int
 	Completed    int
 	Percentage   int
@@ -79,6 +80,7 @@ func newHandler(api achievementSource) http.Handler {
 		"iso":   func(t time.Time) string { return t.Format(time.RFC3339) },
 		"date":  func(t time.Time) string { return t.Format("Jan 2, 2006") },
 		"month": func(t time.Time) string { return t.Format("Jan 2006") },
+		"short": shortName,
 	}).ParseFS(indexHTML, "index.html"))
 
 	render := func(w http.ResponseWriter, status int, data pageData) {
@@ -111,9 +113,9 @@ func newHandler(api achievementSource) http.Handler {
 func buildPage(achievements []achievement, now time.Time) pageData {
 	data := pageData{Achievements: achievements, Total: len(achievements), SyncedAt: now.UTC()}
 	for _, g := range games {
-		data.Games = append(data.Games, gameProgress{Key: g.Key, Name: g.Name})
+		data.Games = append(data.Games, gameProgress{Key: g.Key, Name: g.Name, Short: g.Short})
 	}
-	other := gameProgress{Key: "other", Name: "Other achievements"}
+	other := gameProgress{Key: "other", Name: "Other achievements", Short: shortName("other")}
 
 	var dated []achievement
 	for _, a := range achievements {
@@ -152,6 +154,16 @@ func buildPage(achievements []achievement, now time.Time) pageData {
 	}
 	data.Recent = dated[:min(len(dated), recentLimit)]
 	return data
+}
+
+// shortName is the compact game label used in filter tabs and achievement rows.
+func shortName(key string) string {
+	for _, g := range games {
+		if g.Key == key {
+			return g.Short
+		}
+	}
+	return "Other"
 }
 
 func percent(completed, total int) int {

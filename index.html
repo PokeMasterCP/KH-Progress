@@ -3,63 +3,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090c1b" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f3f4fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#070b1f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f5ef" media="(prefers-color-scheme: light)">
   <meta name="description" content="Kingdom Hearts HD 1.5 + 2.5 ReMIX achievement progress, synced from Steam.">
   <title>KH Progress</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Unicase:wght@500;600&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap">
   <style>
+    /* Sora's palette: royal blue for things you can press, crown gold for what you've earned,
+       and jumpsuit red for where you are right now. */
     :root {
       color-scheme: dark;
-      --ground: #090c1b;
-      --ground-glow: #1a2052;
-      --surface: #10142b;
-      --surface-2: #181d3d;
-      --line: #232950;
-      --line-strong: #363d6e;
-      --text: #eceefa;
-      --muted: #9ba1c6;
-      --faint: #7178a2;
-      --gold: #f1cf74;
-      --kh1: #6db5ff;
-      --recom: #f47a92;
-      --kh2: #f4b650;
-      --bbs: #52d2a7;
-      --other: #b7a6ff;
-      --glass-off: 15%;
-      --display: "Cormorant Unicase", "Cormorant", "Palatino Linotype", Palatino, Georgia, serif;
-      --body: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-      --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --ground: #070b1f;
+      --raised: #0e1536;
+      --raised-2: #172150;
+      --line: #1c2755;
+      --line-strong: #2f3d7c;
+      --text: #eef1ff;
+      --muted: #a6afdc;
+      --faint: #8089bb;
+      --blue: #6690ff;
+      --on-blue: #070b1f;
+      --gold: #f5c542;
+      --gold-text: #f5c542;
+      --red: #ef3b4f;
+      --glass: color-mix(in oklab, var(--blue) 22%, transparent);
+      --gutter: 16px;
+      --serif: "Cormorant Garamond", Garamond, "Palatino Linotype", Palatino, Georgia, serif;
+      --sans: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
     }
     @media (prefers-color-scheme: light) {
       :root {
         color-scheme: light;
-        --ground: #f3f4fa;
-        --ground-glow: #dde2fb;
-        --surface: #ffffff;
-        --surface-2: #eaecf7;
-        --line: #d9dcec;
-        --line-strong: #bfc4de;
-        --text: #141833;
-        --muted: #535a7d;
-        --faint: #6b7196;
-        --gold: #8a6000;
-        --kh1: #1d6ed4;
-        --recom: #c52d4c;
-        --kh2: #a26300;
-        --bbs: #0a8660;
-        --other: #6a52d6;
-        --glass-off: 13%;
+        --ground: #f7f5ef;
+        --raised: #ffffff;
+        --raised-2: #ece9df;
+        --line: #e2ded2;
+        --line-strong: #c8c2b0;
+        --text: #0e1846;
+        --muted: #465081;
+        --faint: #5f6893;
+        --blue: #1f4fd1;
+        --on-blue: #ffffff;
+        --gold: #c68c00;
+        --gold-text: #8a6200;
+        --red: #c8102e;
+        --glass: color-mix(in oklab, var(--blue) 14%, transparent);
       }
     }
-
-    [data-game="kh1"] { --g: var(--kh1); }
-    [data-game="recom"] { --g: var(--recom); }
-    [data-game="kh2"] { --g: var(--kh2); }
-    [data-game="bbs"] { --g: var(--bbs); }
-    [data-game="other"] { --g: var(--other); }
+    @media (min-width: 700px) { :root { --gutter: 32px; } }
 
     * { box-sizing: border-box; }
     [hidden] { display: none !important; }
@@ -67,182 +60,175 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(1100px 560px at 80% -10%, var(--ground-glow), transparent 70%), var(--ground);
+      background: var(--ground);
       color: var(--text);
-      font: 400 15px/1.5 var(--body);
-      padding-top: env(safe-area-inset-top, 0px);
+      font: 400 16px/1.5 var(--sans);
       padding-bottom: env(safe-area-inset-bottom, 0px);
+      -webkit-tap-highlight-color: transparent;
     }
     button, input, select { font: inherit; color: inherit; }
     button { cursor: pointer; }
-    a { color: var(--gold); text-underline-offset: 3px; }
-    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    a { color: var(--blue); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
     .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .num { font-variant-numeric: lining-nums tabular-nums; }
 
-    .page { max-width: 1180px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+    .page { max-width: 1120px; margin-inline: auto; padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)); }
 
     /* Masthead */
-    .masthead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; padding-block: 22px; border-bottom: 1px solid var(--line); }
-    .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-    .brand svg { width: 28px; height: 28px; color: var(--gold); }
-    .edition { margin: 0; font: 400 11px/1 var(--mono); letter-spacing: .06em; color: var(--muted); }
-    .sync { margin: 0 0 0 auto; font-size: 13px; color: var(--muted); }
-    .sync a { font-weight: 600; }
+    .masthead { display: flex; align-items: center; gap: 12px; min-height: 56px; padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font: 700 18px/1 var(--serif); letter-spacing: .12em; text-transform: uppercase; }
+    .brand svg { width: 22px; height: 22px; color: var(--gold); }
+    .sync { display: flex; align-items: center; margin: 0 0 0 auto; font-size: 13px; color: var(--muted); }
+    .icon-button { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -12px; color: var(--blue); border-radius: 6px; }
+    .icon-button svg { width: 18px; height: 18px; }
 
-    /* Hero */
-    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 40px 56px; align-items: center; padding-block: 56px 48px; }
-    .eyebrow { margin: 0 0 14px; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
-    h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; }
-    h1 { font-size: clamp(46px, 7.2vw, 88px); line-height: .92; letter-spacing: -.01em; }
-    .lede { margin: 22px 0 0; max-width: 46ch; font-size: 17px; line-height: 1.6; color: var(--muted); }
-    .lede strong { color: var(--text); font-weight: 600; }
-    .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; max-width: 460px; margin: 36px 0 0; }
-    .stats div { border-top: 1px solid var(--line-strong); padding-top: 12px; }
-    .stats dt { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-    .stats dd { margin: 6px 0 0; white-space: nowrap; font: 600 clamp(24px, 2.6vw, 30px)/1.05 var(--display); font-variant-numeric: lining-nums tabular-nums; }
+    h1, h2 { margin: 0; text-wrap: balance; }
+    h2 { font: 700 26px/1.1 var(--serif); letter-spacing: .01em; }
+    .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 12px; }
+    .hint { margin: 0; font-size: 13px; color: var(--muted); }
 
-    .station { position: relative; margin: 0; width: 100%; max-width: 420px; aspect-ratio: 1; justify-self: end; }
+    /* Overview: the station ring and the per-game breakdown */
+    .top { display: grid; gap: 40px; padding-block: 28px 48px; }
+    .overview { display: grid; justify-items: center; gap: 20px; text-align: center; }
+    .station { position: relative; margin: 0; width: min(100%, 320px); aspect-ratio: 1; }
     .station svg { display: block; width: 100%; height: 100%; overflow: visible; }
     .station .rim { fill: none; stroke: var(--line-strong); stroke-width: 1; }
     .station .rim.inner { stroke: var(--line); }
-    .pane { fill: color-mix(in oklab, var(--g) var(--glass-off), transparent); stroke: color-mix(in oklab, var(--g) 30%, transparent); stroke-width: .6; cursor: pointer; transition: opacity .25s, fill .15s; }
-    .pane.lit { fill: var(--g); stroke: color-mix(in oklab, var(--g) 70%, white); animation: glow .7s ease-out backwards; animation-delay: calc(var(--i) * 3ms + 150ms); }
-    .pane:hover, .pane.active { fill: var(--text); stroke: var(--text); }
-    .pane.dim { opacity: .18; }
-    @keyframes glow { from { fill: color-mix(in oklab, var(--g) var(--glass-off), transparent); } }
-    .station-core { position: absolute; inset: 22%; display: grid; place-items: center; text-align: center; pointer-events: none; }
+    .pane { fill: var(--glass); cursor: pointer; transition: opacity .25s, fill .15s; }
+    .pane.lit { fill: var(--gold); animation: glow .7s ease-out backwards; animation-delay: calc(var(--i) * 3ms + 150ms); }
+    .pane.active { fill: var(--red); }
+    .pane.dim { opacity: .2; }
+    @keyframes glow { from { fill: var(--glass); } }
+    .station-core { position: absolute; inset: 24%; display: grid; place-items: center; text-align: center; pointer-events: none; }
     .station-core > div { display: grid; justify-items: center; gap: 6px; }
-    .core-pct { font: 600 clamp(64px, 9vw, 96px)/.85 var(--display); font-variant-numeric: lining-nums; }
-    .core-pct small { font-size: .38em; margin-left: 2px; color: var(--gold); }
-    .core-caption { font: 400 12px/1.3 var(--mono); color: var(--muted); letter-spacing: .04em; }
-    .core-name { font-size: 16px; font-weight: 600; line-height: 1.3; text-wrap: balance; }
+    .core-pct { font: 700 clamp(64px, 20vw, 88px)/.85 var(--serif); font-variant-numeric: lining-nums; }
+    .core-pct small { font-size: .4em; margin-left: 2px; color: var(--gold-text); }
+    .core-caption { font-size: 13px; color: var(--muted); }
+    .core-name { font-size: 15px; font-weight: 600; line-height: 1.3; text-wrap: balance; }
     .core-meta { font-size: 12px; color: var(--muted); }
-    .core-meta b { font-weight: 600; color: var(--g); }
+    .core-meta b { font-weight: 600; color: var(--text); }
 
-    /* Section headings */
-    .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; margin-bottom: 18px; }
-    h2 { font-size: 30px; line-height: 1.1; }
-    .hint { margin: 0; font-size: 13px; color: var(--muted); }
+    .tally { font-size: 19px; font-weight: 600; line-height: 1.35; }
+    .tally-sub { margin: 2px 0 0; font-size: 15px; color: var(--muted); }
+    .dates { display: grid; grid-template-columns: 1fr 1fr; width: 100%; max-width: 360px; margin: 0; border-top: 1px solid var(--line); }
+    .dates div { padding-top: 12px; }
+    .dates div + div { border-left: 1px solid var(--line); }
+    .dates dt { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .dates dd { margin: 2px 0 0; font: 700 22px/1.2 var(--serif); font-variant-numeric: lining-nums; }
 
-    /* Game cards */
-    .games { padding-bottom: 56px; }
-    .game-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-    .game-card { width: 100%; height: 100%; display: grid; gap: 14px; align-content: start; text-align: left; padding: 18px 18px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; transition: border-color .15s, background .15s; }
-    .game-card:hover { border-color: color-mix(in oklab, var(--g) 55%, var(--line)); }
-    .game-card[aria-pressed="true"] { border-color: var(--g); background: color-mix(in oklab, var(--g) 9%, var(--surface)); box-shadow: inset 0 0 0 1px var(--g); }
-    .game-name { display: flex; gap: 10px; align-items: flex-start; min-height: 2.7em; font-size: 15px; font-weight: 600; line-height: 1.35; }
-    .shard { flex: none; width: 10px; height: 14px; margin-top: 3px; color: var(--g); }
-    .game-count { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-    .game-count b { font: 600 36px/1 var(--display); font-variant-numeric: lining-nums tabular-nums; }
-    .game-count b span { font-size: 20px; color: var(--muted); }
-    .game-count em { font: 500 13px/1 var(--mono); font-style: normal; color: var(--g); }
-    .slats { height: 12px; background: linear-gradient(to right, var(--g) calc(var(--c) / var(--n) * 100%), color-mix(in oklab, var(--g) var(--glass-off), transparent) 0); -webkit-mask: repeating-linear-gradient(to right, #000 0 calc(100% / var(--n) - 1.5px), transparent 0 calc(100% / var(--n))); mask: repeating-linear-gradient(to right, #000 0 calc(100% / var(--n) - 1.5px), transparent 0 calc(100% / var(--n))); }
-    .game-latest { font-size: 12px; color: var(--muted); }
+    .game-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .game-row { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; width: 100%; padding: 14px 0; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; }
+    .game-row::before { content: ""; position: absolute; left: calc(-1 * var(--gutter)); top: -1px; bottom: -1px; width: 3px; background: var(--red); opacity: 0; }
+    .game-row[aria-pressed="true"]::before { opacity: 1; }
+    .game-name { font-weight: 600; line-height: 1.3; }
+    .game-count { font-weight: 600; }
+    .game-count span, .game-latest { color: var(--muted); font-weight: 400; }
+    .game-latest { font-size: 13px; }
+    .game-pct { font-size: 13px; font-weight: 600; color: var(--gold-text); }
+    .slats { grid-column: 1 / -1; height: 8px; background: linear-gradient(to right, var(--gold) calc(var(--c) / var(--n) * 100%), var(--glass) 0); -webkit-mask: repeating-linear-gradient(to right, #000 0 calc(100% / var(--n) - 2px), transparent 0 calc(100% / var(--n))); mask: repeating-linear-gradient(to right, #000 0 calc(100% / var(--n) - 2px), transparent 0 calc(100% / var(--n))); }
 
     /* Journal */
-    .journal { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px 48px; align-items: start; padding-top: 44px; border-top: 1px solid var(--line); }
-    .entries { grid-column: 1; grid-row: 1; min-width: 0; }
-    .recent { grid-column: 2; grid-row: 1; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); }
+    .journal { display: grid; gap: 44px; }
+    .entries { min-width: 0; }
 
-    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-    .search { position: relative; flex: 1 1 220px; }
-    .search svg { position: absolute; left: 12px; top: 50%; width: 16px; height: 16px; translate: 0 -50%; color: var(--faint); pointer-events: none; }
-    .search input, .sort select { width: 100%; height: 40px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
-    .search input { padding: 0 12px 0 36px; }
+    .ach-icon { flex: none; display: grid; place-items: center; width: 44px; height: 44px; overflow: hidden; border-radius: 6px; background: var(--raised-2); color: var(--gold-text); font-size: 18px; box-shadow: inset 0 0 0 1px var(--gold); }
+    .ach-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+    .recent-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .recent-list li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .recent-list .ach-icon { width: 40px; height: 40px; }
+    .recent-list strong { display: block; font-size: 15px; font-weight: 600; line-height: 1.3; }
+    .recent-list span { font-size: 13px; color: var(--muted); }
+    .recent .empty { margin: 0; font-size: 15px; color: var(--muted); }
+
+    /* Filters stay pinned while scrolling a long list */
+    .controls { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--gutter)); padding: calc(env(safe-area-inset-top, 0px) + 8px) var(--gutter) 0; background: var(--ground); border-bottom: 1px solid var(--line); }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .search { position: relative; flex: 1 1 130px; }
+    .search svg { position: absolute; left: 11px; top: 50%; width: 16px; height: 16px; translate: 0 -50%; color: var(--faint); pointer-events: none; }
+    .search input { width: 100%; height: 40px; padding: 0 10px 0 34px; font-size: 16px; background: var(--raised); border: 1px solid var(--line-strong); border-radius: 6px; }
     .search input::placeholder { color: var(--faint); }
-    .segmented { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
-    .segmented button { height: 32px; padding: 0 12px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 500; }
-    .segmented button:hover { color: var(--text); }
-    .segmented button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); font-weight: 600; box-shadow: inset 0 0 0 1px var(--line-strong); }
-    .sort select { padding: 0 32px 0 12px; font-size: 13px; appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+    .search input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 1px var(--blue); }
+    .segmented { display: flex; flex: none; padding: 2px; gap: 2px; background: var(--raised); border: 1px solid var(--line-strong); border-radius: 6px; }
+    .segmented button { height: 34px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 14px; font-weight: 500; }
+    .segmented button[aria-pressed="true"] { background: var(--raised-2); color: var(--text); font-weight: 600; }
+    .tabs { display: flex; margin: 4px -10px 0; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { position: relative; flex: none; height: 44px; padding: 0 10px; border: 0; background: none; color: var(--muted); font-size: 15px; font-weight: 600; white-space: nowrap; }
+    .tab[aria-pressed="true"] { color: var(--text); }
+    .tab[aria-pressed="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 3px; background: var(--red); }
 
-    .list-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 30px; padding-bottom: 12px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
-    .chip { display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 6px 0 10px; border: 1px solid var(--g); border-radius: 999px; color: var(--text); background: color-mix(in oklab, var(--g) 10%, transparent); font-size: 12px; font-weight: 600; }
-    .chip .shard { width: 8px; height: 11px; margin: 0; }
-    .chip button { display: grid; place-items: center; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); }
-    .chip button:hover { color: var(--text); background: var(--surface-2); }
-    .text-button { padding: 0; border: 0; background: none; color: var(--gold); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .list-status { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 44px; font-size: 14px; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .list-status .sort { margin-left: auto; }
+    .sort select { field-sizing: content; max-width: 100%; height: 36px; padding: 0 18px 0 4px; border: 0; background: transparent no-repeat right 4px center / 10px 6px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='m1 1 4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E"); color: var(--blue); font-size: 14px; font-weight: 600; appearance: none; }
+    .text-button { min-height: 36px; padding: 0; border: 0; background: none; color: var(--blue); font-size: 14px; font-weight: 600; }
 
     #achievements { list-style: none; margin: 0; padding: 0; }
-    .ach { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon text status"; gap: 4px 16px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--line); scroll-margin-top: 90px; }
+    .ach { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 140px; }
     .ach.flash { animation: flash 1.6s ease-out; }
-    @keyframes flash { from { background: color-mix(in oklab, var(--g) 22%, transparent); } }
-    .ach-icon { grid-area: icon; width: 56px; height: 56px; border-radius: 8px; overflow: hidden; display: grid; place-items: center; background: var(--surface-2); border: 1px solid color-mix(in oklab, var(--g) 55%, var(--line)); color: var(--g); font-size: 22px; }
-    .ach-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .ach.locked .ach-icon { border-color: var(--line); color: var(--faint); }
+    @keyframes flash { from { background: color-mix(in oklab, var(--gold) 22%, transparent); } }
+    .ach.locked .ach-icon { box-shadow: none; color: var(--faint); }
     .ach.locked .ach-icon img.tint { filter: grayscale(1); opacity: .55; }
-    .ach-text { grid-area: text; min-width: 0; }
-    .ach-name { margin: 0; font-size: 15.5px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
-    .ach.locked .ach-name { color: color-mix(in oklab, var(--text) 80%, var(--ground)); }
-    .ach-desc { margin: 3px 0 0; max-width: 68ch; font-size: 14px; line-height: 1.5; color: var(--muted); }
+    .ach-text { min-width: 0; }
+    .ach-name { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+    .ach.locked .ach-name { color: color-mix(in oklab, var(--text) 78%, var(--ground)); }
+    .ach-desc { margin: 2px 0 0; max-width: 68ch; font-size: 14px; line-height: 1.45; color: var(--muted); }
     .ach-desc.secret { font-style: italic; color: var(--faint); }
-    .ach-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; font-size: 12px; color: var(--faint); }
-    .ach-meta .game { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
-    .ach-meta .shard { width: 7px; height: 10px; margin: 0; }
-    .ach-meta code { font: 400 11.5px/1 var(--mono); letter-spacing: .03em; }
-    .ach-status { grid-area: status; display: inline-flex; align-items: center; gap: 7px; font: 400 12px/1.2 var(--mono); color: var(--text); white-space: nowrap; }
-    .ach-status svg { width: 15px; height: 15px; flex: none; }
-    .ach:not(.locked) .ach-status svg { color: var(--g); }
-    .ach.locked .ach-status { color: var(--faint); }
+    .ach-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; margin: 6px 0 0; font-size: 13px; color: var(--faint); }
+    .ach-status { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--text); }
+    .ach-status svg { width: 14px; height: 14px; flex: none; color: var(--gold); }
+    .ach.locked .ach-status, .ach.locked .ach-status svg { color: var(--faint); }
     .message { padding: 48px 16px; text-align: center; color: var(--muted); line-height: 1.7; }
     .message p { margin: 0 auto; max-width: 50ch; }
 
-    .recent h2 { font-size: 24px; margin-bottom: 18px; }
-    .timeline { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
-    .timeline::before { content: ""; position: absolute; left: 21px; top: 22px; bottom: 22px; width: 1px; background: var(--line-strong); }
-    .timeline li { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; }
-    .timeline .ach-icon { grid-area: auto; width: 44px; height: 44px; border-radius: 50%; font-size: 17px; box-shadow: 0 0 0 4px var(--ground); }
-    .timeline strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.35; }
-    .timeline span { font-size: 12px; color: var(--muted); }
-    .recent .empty { margin: 0; font-size: 14px; color: var(--muted); }
-
     /* Error */
-    .fault { max-width: 640px; padding-block: 96px 120px; }
-    .fault h1 { font-size: clamp(42px, 6vw, 68px); }
-    .fault p { margin: 20px 0 0; font-size: 17px; line-height: 1.65; color: var(--muted); }
-    .fault code { font: 400 14px var(--mono); color: var(--text); }
-    .button { display: inline-flex; align-items: center; height: 42px; margin-top: 28px; padding: 0 20px; border-radius: 8px; background: var(--gold); color: var(--ground); font-weight: 700; text-decoration: none; }
+    .fault { max-width: 600px; padding-block: 64px 96px; }
+    .fault .eyebrow { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+    .fault h1 { font: 700 clamp(36px, 9vw, 56px)/1.05 var(--serif); }
+    .fault p { margin: 18px 0 0; font-size: 16px; line-height: 1.6; color: var(--muted); }
+    .fault code { font: 14px ui-monospace, "SF Mono", Menlo, monospace; color: var(--text); }
+    .button { display: inline-flex; align-items: center; height: 48px; margin-top: 28px; padding: 0 22px; border-radius: 6px; background: var(--blue); color: var(--on-blue); font-weight: 600; text-decoration: none; }
 
-    footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 64px; padding-block: 22px 32px; border-top: 1px solid var(--line); font-size: 12px; color: var(--faint); }
-    footer .mark { color: var(--gold); margin-right: 6px; }
+    footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; margin-top: 56px; padding-block: 20px 28px; border-top: 1px solid var(--line); font-size: 13px; color: var(--faint); }
+    footer .mark { color: var(--red); margin-right: 6px; }
 
-    @media (max-width: 960px) {
-      .hero { grid-template-columns: 1fr; padding-top: 40px; }
-      .station { justify-self: center; max-width: 380px; }
-      .journal { grid-template-columns: 1fr; }
-      .entries, .recent { grid-column: 1; grid-row: auto; }
-      .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .recent { position: static; }
-      .timeline { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-      .timeline::before { display: none; }
+    .ach > .ach-status { display: none; }
+    @media (min-width: 700px) {
+      .ach { grid-template-columns: 52px minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+      .ach .ach-icon { width: 52px; height: 52px; }
+      .ach-meta .ach-status { display: none; }
+      .ach > .ach-status { display: inline-flex; }
     }
-    @media (max-width: 620px) {
-      .sync { margin-left: 0; width: 100%; }
-      .game-grid { grid-template-columns: 1fr; }
-      .game-name { min-height: 0; }
-      .ach { grid-template-columns: 48px minmax(0, 1fr); grid-template-areas: "icon text" ". status"; align-items: start; }
-      .ach-icon { width: 48px; height: 48px; }
-      .ach-status { margin-top: 4px; }
-      .segmented { flex: 1 1 auto; }
-      .segmented button { flex: 1; }
-      .sort { flex: 1 1 140px; }
+    @media (min-width: 900px) {
+      .top { grid-template-columns: 340px minmax(0, 1fr); gap: 64px; align-items: center; padding-block: 48px 56px; }
+      .journal { grid-template-columns: minmax(0, 1fr) 280px; gap: 56px; align-items: start; }
+      .entries { grid-column: 1; grid-row: 1; }
+      .recent { grid-column: 2; grid-row: 1; position: sticky; top: 24px; }
+    }
+    /* Hover styles only where there's a real pointer, so taps don't leave them stuck on. */
+    @media (hover: hover) {
+      .game-row:hover .game-name { text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 4px; }
+      .tab:hover, .segmented button:hover { color: var(--text); }
+      .icon-button:hover { background: var(--raised); }
+      .pane:hover { fill: var(--red); }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="shard" viewBox="0 0 10 14"><path d="M5 0 10 5 5 14 0 5Z" fill="currentColor"/></symbol>
-    <symbol id="unlocked" viewBox="0 0 16 16"><path d="M8 1.5 14.5 8 8 14.5 1.5 8Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="m5.4 8 1.8 1.8 3.4-3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="locked" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 7V4.8a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="unlocked" viewBox="0 0 16 16"><path d="M8 1.5 14.5 8 8 14.5 1.5 8Z" fill="currentColor" fill-opacity=".2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="m5.4 8 1.8 1.8 3.4-3.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="locked" viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V4.8a2.5 2.5 0 0 1 5 0V7" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
   </svg>
   <div class="page">
     <header class="masthead">
-      <a class="brand" href="./"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 23 3 10l8 6 5-12 5 12 8-6-2 13H5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 27h18" stroke="currentColor" stroke-width="1.5"/></svg>KH Progress</a>
-      <p class="edition">HD 1.5 + 2.5 ReMIX · Steam</p>
-      <p class="sync">Synced <time datetime="{{iso .SyncedAt}}" data-format="time">{{.SyncedAt.Format "15:04 UTC"}}</time> · <a href="">Refresh</a></p>
+      <a class="brand" href="./"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 23 3 10l8 6 5-12 5 12 8-6-2 13H5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 27h18" stroke="currentColor" stroke-width="2"/></svg>KH Progress</a>
+      <p class="sync">Synced&nbsp;<time datetime="{{iso .SyncedAt}}" data-format="time">{{.SyncedAt.Format "15:04 UTC"}}</time>
+        <a class="icon-button" href="" aria-label="Refresh" title="Refresh"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 8A5.5 5.5 0 1 1 11.8 4"/><path d="M13.5 2v3.2h-3.2"/></svg></a>
+      </p>
     </header>
 
     {{if .Failed}}
@@ -255,71 +241,71 @@
     </main>
     {{else}}
     <main>
-      <section class="hero" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Achievement journal</p>
-          <h1 id="page-title">Every world, one heart at a time</h1>
-          <p class="lede">
-            {{if .Total}}<strong>{{.Completed}} of {{.Total}} achievements unlocked</strong> across {{len .Games}} {{if eq (len .Games) 1}}game{{else}}games{{end}}.
-            {{if .Remaining}}{{.Remaining}} still waiting in the dark.{{else}}Every last one of them. The collection is complete.{{end}}
-            {{else}}No achievements came back from Steam yet.{{end}}
-          </p>
-          <dl class="stats">
-            <div><dt>Unlocked</dt><dd>{{.Completed}}</dd></div>
-            <div><dt>Still locked</dt><dd>{{.Remaining}}</dd></div>
+      <div class="top">
+        <section class="overview" aria-labelledby="page-title">
+          <figure class="station" aria-label="{{.Percentage}}% complete: {{.Completed}} of {{.Total}} achievements unlocked">
+            <svg viewBox="0 0 400 400" aria-hidden="true">
+              <circle class="rim" cx="200" cy="200" r="198"/>
+              <circle class="rim inner" cx="200" cy="200" r="142"/>
+              <g id="panes"></g>
+            </svg>
+            <div class="station-core" aria-hidden="true">
+              <div id="core-default">
+                <span class="core-pct">{{.Percentage}}<small>%</small></span>
+                <span class="core-caption">complete</span>
+              </div>
+              <div id="core-hover" hidden>
+                <span class="core-name" id="core-name"></span>
+                <span class="core-meta" id="core-meta"></span>
+              </div>
+            </div>
+          </figure>
+          <div>
+            {{if .Total}}
+            <h1 class="tally num" id="page-title">{{.Completed}} of {{.Total}} achievements unlocked</h1>
+            <p class="tally-sub">{{if .Remaining}}<span class="num">{{.Remaining}}</span> still waiting in the dark{{else}}Every last one. The collection is complete.{{end}}</p>
+            {{else}}
+            <h1 class="tally" id="page-title">No achievements came back from Steam yet.</h1>
+            {{end}}
+          </div>
+          <dl class="dates">
             <div><dt>First unlock</dt><dd>{{if .FirstUnlock.IsZero}}—{{else}}<time datetime="{{iso .FirstUnlock}}" data-format="month">{{month .FirstUnlock}}</time>{{end}}</dd></div>
             <div><dt>Latest</dt><dd>{{if .LatestUnlock.IsZero}}—{{else}}<time datetime="{{iso .LatestUnlock}}" data-format="short">{{month .LatestUnlock}}</time>{{end}}</dd></div>
           </dl>
-        </div>
-        <figure class="station" aria-label="{{.Percentage}}% complete: {{.Completed}} of {{.Total}} achievements unlocked">
-          <svg viewBox="0 0 400 400" aria-hidden="true">
-            <circle class="rim" cx="200" cy="200" r="198"/>
-            <circle class="rim inner" cx="200" cy="200" r="142"/>
-            <g id="panes"></g>
-          </svg>
-          <div class="station-core" aria-hidden="true">
-            <div id="core-default">
-              <span class="core-pct">{{.Percentage}}<small>%</small></span>
-              <span class="core-caption">{{.Completed}} / {{.Total}} unlocked</span>
-            </div>
-            <div id="core-hover" hidden>
-              <span class="core-name" id="core-name"></span>
-              <span class="core-meta" id="core-meta"></span>
-            </div>
-          </div>
-        </figure>
-      </section>
+        </section>
 
-      {{if .Games}}
-      <section class="games" aria-labelledby="games-title">
-        <div class="section-head">
-          <h2 id="games-title">By game</h2>
-          <p class="hint js-only" hidden>Select a game to filter the journal.</p>
-        </div>
-        <ul class="game-grid">
-          {{range .Games}}
-          <li>
-            <button class="game-card" type="button" aria-pressed="false" data-game="{{.Key}}" data-name="{{.Name}}">
-              <span class="game-name"><svg class="shard" aria-hidden="true"><use href="#shard"/></svg>{{.Name}}</span>
-              <span class="game-count"><b>{{.Completed}}<span>/{{.Total}}</span></b><em>{{.Percentage}}%</em></span>
-              <span class="slats" style="--c: {{.Completed}}; --n: {{.Total}}" aria-hidden="true"></span>
-              <span class="game-latest">{{if .LatestUnlock.IsZero}}{{if .Completed}}Unlock dates unavailable{{else}}Nothing unlocked yet{{end}}{{else}}Last unlock <time datetime="{{iso .LatestUnlock}}" data-format="relative">{{date .LatestUnlock}}</time>{{end}}</span>
-            </button>
-          </li>
-          {{end}}
-        </ul>
-      </section>
-      {{end}}
+        {{if .Games}}
+        <section class="games" aria-labelledby="games-title">
+          <div class="section-head">
+            <h2 id="games-title">By game</h2>
+            <p class="hint js-only" hidden>Tap a game to see its achievements</p>
+          </div>
+          <ul class="game-list">
+            {{range .Games}}
+            <li>
+              <button class="game-row" type="button" aria-pressed="false" data-game="{{.Key}}" data-name="{{.Name}}">
+                <span class="game-name">{{.Name}}</span>
+                <span class="game-count num">{{.Completed}}<span>/{{.Total}}</span></span>
+                <span class="slats" style="--c: {{.Completed}}; --n: {{.Total}}" aria-hidden="true"></span>
+                <span class="game-latest">{{if .LatestUnlock.IsZero}}{{if .Completed}}Unlock dates unavailable{{else}}Nothing unlocked yet{{end}}{{else}}Last unlock <time datetime="{{iso .LatestUnlock}}" data-format="relative">{{date .LatestUnlock}}</time>{{end}}</span>
+                <span class="game-pct num">{{.Percentage}}%</span>
+              </button>
+            </li>
+            {{end}}
+          </ul>
+        </section>
+        {{end}}
+      </div>
 
       <div class="journal">
         <aside class="recent" aria-labelledby="recent-title">
-          <h2 id="recent-title">Recent unlocks</h2>
+          <div class="section-head"><h2 id="recent-title">Recent unlocks</h2></div>
           {{if .Recent}}
-          <ol class="timeline">
+          <ol class="recent-list">
             {{range .Recent}}
-            <li data-game="{{or .GameKey "other"}}">
+            <li>
               <span class="ach-icon" aria-hidden="true">{{if .Icon}}<img src="{{.Icon}}" alt="" loading="lazy">{{else}}✧{{end}}</span>
-              <div><strong>{{or .Name .APIName}}</strong><span>{{or .Game "Other achievements"}} · <time datetime="{{iso .UnlockDate}}" data-format="relative">{{date .UnlockDate}}</time></span></div>
+              <div><strong>{{or .Name .APIName}}</strong><span>{{short .GameKey}} · <time datetime="{{iso .UnlockDate}}" data-format="relative">{{date .UnlockDate}}</time></span></div>
             </li>
             {{end}}
           </ol>
@@ -328,48 +314,49 @@
           {{end}}
         </aside>
 
-        <section class="entries" aria-labelledby="list-title">
+        <section class="entries" id="entries" aria-labelledby="list-title">
           <div class="section-head">
             <h2 id="list-title">All achievements</h2>
           </div>
-          <div class="toolbar js-only" hidden>
-            <label class="search">
-              <span class="visually-hidden">Search achievements</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5" stroke-linecap="round"/></svg>
-              <input id="search" type="search" placeholder="Search names and descriptions" autocomplete="off">
-            </label>
-            <div class="segmented" role="group" aria-label="Show">
-              <button type="button" data-status="all" aria-pressed="true">All</button>
-              <button type="button" data-status="unlocked" aria-pressed="false">Unlocked</button>
-              <button type="button" data-status="locked" aria-pressed="false">Locked</button>
+          <div class="controls js-only" hidden>
+            <div class="filters">
+              <label class="search">
+                <span class="visually-hidden">Search achievements</span>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5" stroke-linecap="round"/></svg>
+                <input id="search" type="search" placeholder="Search" autocomplete="off" enterkeyhint="search">
+              </label>
+              <div class="segmented" role="group" aria-label="Show">
+                <button type="button" data-status="all" aria-pressed="true">All</button>
+                <button type="button" data-status="unlocked" aria-pressed="false">Unlocked</button>
+                <button type="button" data-status="locked" aria-pressed="false">Locked</button>
+              </div>
             </div>
-            <label class="sort">
+            <div class="tabs" role="group" aria-label="Game">
+              <button class="tab" type="button" data-game="" aria-pressed="true">All games</button>
+              {{range .Games}}<button class="tab" type="button" data-game="{{.Key}}" aria-pressed="false" aria-label="{{.Name}}">{{.Short}}</button>{{end}}
+            </div>
+          </div>
+          <div class="list-status">
+            <span id="list-count" role="status" aria-live="polite">{{.Total}} achievements · {{.Percentage}}% complete</span>
+            <button type="button" class="text-button" id="clear-filters" hidden>Clear filters</button>
+            <label class="sort js-only" hidden>
               <span class="visually-hidden">Sort by</span>
               <select id="sort">
                 <option value="game">Game order</option>
-                <option value="recent">Recently unlocked</option>
+                <option value="recent">Newest first</option>
               </select>
             </label>
           </div>
-          <div class="list-status">
-            <span id="game-chip" class="chip" hidden><svg class="shard" aria-hidden="true"><use href="#shard"/></svg><span id="game-chip-name"></span><button type="button" id="clear-game" aria-label="Show all games"><svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="m2 2 8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></span>
-            <span id="list-count" role="status" aria-live="polite">{{.Total}} achievements · {{.Percentage}}% complete</span>
-            <button type="button" class="text-button" id="clear-filters" hidden>Clear filters</button>
-          </div>
           <ul id="achievements">
             {{range .Achievements}}
-            <li class="ach{{if not .Unlocked}} locked{{end}}" data-game="{{or .GameKey "other"}}" data-achieved="{{.Achieved}}" data-time="{{.UnlockTime}}">
+            <li class="ach{{if not .Unlocked}} locked{{end}}" data-game="{{or .GameKey "other"}}" data-achieved="{{.Achieved}}" data-time="{{.UnlockTime}}" data-api="{{.APIName}}">
               <span class="ach-icon" aria-hidden="true">{{if and (not .Unlocked) .IconGray}}<img src="{{.IconGray}}" alt="" loading="lazy">{{else if .Icon}}<img class="tint" src="{{.Icon}}" alt="" loading="lazy">{{else}}✧{{end}}</span>
               <div class="ach-text">
                 <h3 class="ach-name">{{or .Name .APIName "Unnamed achievement"}}</h3>
                 {{if .Description}}<p class="ach-desc">{{.Description}}</p>{{else if .Hidden}}<p class="ach-desc secret">Hidden achievement. Steam keeps its description secret.</p>{{end}}
-                <p class="ach-meta"><span class="game"><svg class="shard" aria-hidden="true"><use href="#shard"/></svg>{{or .Game "Other achievements"}}</span>{{if .APIName}}<code>{{.APIName}}</code>{{end}}</p>
+                <p class="ach-meta"><span class="game" title="{{or .Game "Other achievements"}}">{{short .GameKey}}</span>{{template "status" .}}</p>
               </div>
-              {{if .Unlocked}}
-              <span class="ach-status"><svg aria-hidden="true"><use href="#unlocked"/></svg>{{if .UnlockTime}}<span><span class="visually-hidden">Unlocked </span><time datetime="{{iso .UnlockDate}}" data-format="date">{{date .UnlockDate}}</time></span>{{else}}Unlocked{{end}}</span>
-              {{else}}
-              <span class="ach-status"><svg aria-hidden="true"><use href="#locked"/></svg>Locked</span>
-              {{end}}
+              {{template "status" .}}
             </li>
             {{end}}
           </ul>
@@ -382,8 +369,8 @@
     {{end}}
 
     <footer>
-      <span><span class="mark" aria-hidden="true">✧</span>May your heart be your guiding key.</span>
-      <span>Achievement data from the Steam Web API · App 2552430 · Refresh to sync</span>
+      <span><span class="mark" aria-hidden="true">♥</span>May your heart be your guiding key.</span>
+      <span>HD 1.5 + 2.5 ReMIX · Steam app 2552430</span>
     </footer>
   </div>
 
@@ -391,6 +378,7 @@
   (() => {
     const $ = s => document.querySelector(s);
     const $$ = s => [...document.querySelectorAll(s)];
+    const smooth = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 
     // Show dates in the viewer's own time zone and language.
     const formats = {
@@ -427,11 +415,15 @@
     const list = $('#achievements');
     if (!list) return;
     const rows = [...list.querySelectorAll('.ach')];
-    const cards = $$('.game-card');
+    const gameRows = $$('.game-row');
+    const tabs = $$('.tab');
     const statusButtons = $$('.segmented button');
-    const names = Object.fromEntries(cards.map(card => [card.dataset.game, card.dataset.name]));
+    const names = Object.fromEntries(gameRows.map(row => [row.dataset.game, row.dataset.name]));
     for (const row of rows) {
-      row.dataset.search = [...row.querySelectorAll('.ach-name, .ach-desc:not(.secret), .ach-meta')].map(el => el.textContent).join(' ').toLowerCase();
+      row.dataset.search = [
+        ...[...row.querySelectorAll('.ach-name, .ach-desc:not(.secret), .ach-meta .game')].map(el => el.textContent),
+        names[row.dataset.game] || '', row.dataset.api,
+      ].join(' ').toLowerCase();
     }
 
     // Station: one pane of glass per achievement, grouped by game around the ring.
@@ -442,9 +434,9 @@
       if (!group || group.game !== row.dataset.game) groups.push(group = { game: row.dataset.game, rows: [] });
       group.rows.push(row);
     }
-    const groupGap = groups.length > 1 ? 3.5 : 0;
+    const groupGap = groups.length > 1 ? 4 : 0;
     const step = rows.length ? (360 - groupGap * groups.length) / rows.length : 0;
-    const paneGap = Math.min(0.5, step * 0.3);
+    const paneGap = Math.min(0.55, step * 0.3);
     const point = (radius, degrees) => {
       const a = degrees * Math.PI / 180;
       return `${(200 + radius * Math.cos(a)).toFixed(2)} ${(200 + radius * Math.sin(a)).toFixed(2)}`;
@@ -457,7 +449,7 @@
         const a0 = angle + paneGap / 2, a1 = angle + step - paneGap / 2;
         const large = a1 - a0 > 180 ? 1 : 0;
         const pane = document.createElementNS(svgNS, 'path');
-        pane.setAttribute('d', `M${point(190, a0)}A190 190 0 ${large} 1 ${point(190, a1)}L${point(150, a1)}A150 150 0 ${large} 0 ${point(150, a0)}Z`);
+        pane.setAttribute('d', `M${point(192, a0)}A192 192 0 ${large} 1 ${point(192, a1)}L${point(152, a1)}A152 152 0 ${large} 0 ${point(152, a0)}Z`);
         pane.setAttribute('class', row.dataset.achieved === '1' ? 'pane lit' : 'pane');
         pane.dataset.game = row.dataset.game;
         pane.style.setProperty('--i', index++);
@@ -479,7 +471,6 @@
       const row = pane.row;
       $('#core-name').textContent = row.querySelector('.ach-name').textContent;
       const meta = $('#core-meta');
-      meta.dataset.game = row.dataset.game;
       meta.replaceChildren();
       const status = document.createElement('b');
       status.textContent = row.dataset.achieved === '1' ? 'Unlocked' : 'Locked';
@@ -492,7 +483,7 @@
       if (!pane) return;
       Object.assign(state, { game: pane.dataset.game, status: 'all', q: '' });
       apply();
-      pane.row.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      pane.row.scrollIntoView({ behavior: smooth(), block: 'center' });
       pane.row.classList.remove('flash');
       void pane.row.offsetWidth;
       pane.row.classList.add('flash');
@@ -525,19 +516,16 @@
 
       search.value = state.q;
       sort.value = state.sort;
-      cards.forEach(card => card.setAttribute('aria-pressed', String(card.dataset.game === state.game)));
+      gameRows.forEach(row => row.setAttribute('aria-pressed', String(row.dataset.game === state.game)));
+      tabs.forEach(tab => tab.setAttribute('aria-pressed', String(tab.dataset.game === state.game)));
       statusButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.status === state.status)));
-
-      const chip = $('#game-chip');
-      chip.hidden = !state.game;
-      chip.dataset.game = state.game;
-      $('#game-chip-name').textContent = names[state.game] || '';
+      $('.tab[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       $('#list-title').textContent = state.game ? names[state.game] : 'All achievements';
 
       const filtered = Boolean(state.game || state.q || state.status !== 'all');
       const noun = shown === 1 ? 'achievement' : 'achievements';
       $('#list-count').textContent = filtered
-        ? `${shown} ${noun} shown · ${unlocked} unlocked`
+        ? `${shown} shown · ${unlocked} unlocked`
         : `${shown} ${noun} · ${shown ? Math.round(unlocked / shown * 100) : 0}% complete`;
       $('#clear-filters').hidden = !(state.q || state.status !== 'all');
 
@@ -556,14 +544,16 @@
       history.replaceState(null, '', next.size ? `?${next}` : location.pathname);
     }
 
-    cards.forEach(card => card.addEventListener('click', () => {
-      state.game = state.game === card.dataset.game ? '' : card.dataset.game;
+    // Picking a game from the overview jumps down to its achievements.
+    gameRows.forEach(row => row.addEventListener('click', () => {
+      state.game = row.dataset.game;
       apply();
+      $('#entries').scrollIntoView({ behavior: smooth(), block: 'start' });
     }));
+    tabs.forEach(tab => tab.addEventListener('click', () => { state.game = tab.dataset.game; apply(); }));
     statusButtons.forEach(button => button.addEventListener('click', () => { state.status = button.dataset.status; apply(); }));
     search.addEventListener('input', () => { state.q = search.value; apply(); });
     sort.addEventListener('change', () => { state.sort = sort.value; apply(); });
-    $('#clear-game').addEventListener('click', () => { state.game = ''; apply(); });
     $('#clear-filters').addEventListener('click', () => { Object.assign(state, { status: 'all', q: '' }); apply(); search.focus(); });
 
     $$('.js-only').forEach(el => { el.hidden = false; });
@@ -572,3 +562,4 @@
   </script>
 </body>
 </html>
+{{define "status"}}{{if .Unlocked}}<span class="ach-status"><svg aria-hidden="true"><use href="#unlocked"/></svg>{{if .UnlockTime}}<span><span class="visually-hidden">Unlocked </span><time datetime="{{iso .UnlockDate}}" data-format="date">{{date .UnlockDate}}</time></span>{{else}}Unlocked{{end}}</span>{{else}}<span class="ach-status"><svg aria-hidden="true"><use href="#locked"/></svg>Locked</span>{{end}}{{end}}

@@ -45,16 +45,16 @@ go run .
 
 Open `http://<container-ip>:8080` if the container's IP is reachable from your browser. With the `-p 8080:8080` mapping above, you can use `http://<docker-host-ip>:8080` instead.
 
-The page is organised into four parts:
+The page is designed for phones first and is organised into four parts:
 
-- **Overview**: the title area shows how many achievements you've unlocked and how many are still locked, plus the dates of your first and latest unlocks. The ring beside it has one pane of glass per achievement, grouped and colored by game. Lit panes are unlocked. Hover over a pane to see which achievement it is, or click it to jump to that achievement in the list.
-- **By game**: one card per game with its unlocked count, percentage, a bar with a segment per achievement, and how long ago you last unlocked one there. Select a card to filter the list to that game, and select it again to show all games.
+- **Overview**: a ring with one pane of glass per achievement, grouped by game. Gold panes are unlocked. The centre shows your overall percentage, with your unlocked count and the dates of your first and latest unlocks below. Hover over a pane to see which achievement it is, or tap it to jump to that achievement in the list.
+- **By game**: one row per game with its unlocked count, percentage, a bar with a segment per achievement, and how long ago you last unlocked one there. Tap a game to jump to its achievements.
 - **Recent unlocks**: your five most recent unlocks, newest first.
-- **All achievements**: every achievement with its icon, description, game, Steam API name (`ACH_###`) and unlock date. Search by name or description, show only unlocked or locked achievements, and sort by game order or by most recently unlocked. Hidden achievements show their name, but Steam doesn't provide their descriptions.
+- **All achievements**: every achievement with its icon, description, game and unlock date. The filter bar stays at the top of the screen while you scroll: search by name, description or Steam API name (`ACH_###`), show only unlocked or locked achievements, and switch between games. Sort by game order or newest first. Hidden achievements show their name, but Steam doesn't provide their descriptions.
 
 Dates and times are shown in your browser's time zone. The current filters are kept in the page address (for example `?game=kh2&status=locked`), so refreshing or bookmarking the page keeps the same view. The page follows your system's light or dark appearance setting.
 
-The application makes two Steam API calls per page load: one for your achievement status and unlock times, and one for achievement names, descriptions and icons. The header shows when the data was last synced. To get the latest data, refresh the page or select **Refresh**.
+The application makes two Steam API calls per page load: one for your achievement status and unlock times, and one for achievement names, descriptions and icons. The header shows when the data was last synced. To get the latest data, refresh the page or select the refresh button beside the sync time.
 
 If Steam doesn't respond, the page explains the problem and offers **Try again**. If it keeps failing, check that `API_KEY` and `STEAM_ID` are correct and that your Steam profile's **Game details** privacy setting is **Public**.
 

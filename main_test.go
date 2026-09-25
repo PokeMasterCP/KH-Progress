@@ -43,9 +43,10 @@ func TestAchievementPage(t *testing.T) {
 				`class="ach" data-game="kh1" data-achieved="1" data-time="1709424000"`,
 				`src="https://example.com/icon.jpg"`, `src="https://example.com/gray.jpg"`, `class="ach locked"`,
 				`datetime="2024-03-03T00:00:00Z" data-format="date">Mar 3, 2024</time>`,
-				`<span class="game-count"><b>2<span>/3</span></b><em>67%</em></span>`, `style="--c: 2; --n: 3"`,
+				`<span class="game-count num">2<span>/3</span></span>`, `<span class="game-pct num">67%</span>`, `style="--c: 2; --n: 3"`,
 				`data-game="kh1" data-name="Kingdom Hearts Final Mix"`,
-				`role="status" hidden>`,
+				`role="status" hidden>`, `data-game="kh1" aria-pressed="false" aria-label="Kingdom Hearts Final Mix">KH I</button>`,
+				`<span class="game" title="Kingdom Hearts Final Mix">KH I</span>`,
 			},
 		},
 		{
