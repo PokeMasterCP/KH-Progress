@@ -61,14 +61,15 @@ type schema struct {
 type game struct {
 	Key         string
 	Name        string
+	Short       string
 	first, last int
 }
 
 var games = []game{
-	{"kh1", "Kingdom Hearts Final Mix", 1, 55},
-	{"recom", "Re:Chain of Memories", 56, 102},
-	{"kh2", "Kingdom Hearts II Final Mix", 103, 152},
-	{"bbs", "Birth by Sleep Final Mix", 153, 197},
+	{"kh1", "Kingdom Hearts Final Mix", "KH I", 1, 55},
+	{"recom", "Re:Chain of Memories", "Re:CoM", 56, 102},
+	{"kh2", "Kingdom Hearts II Final Mix", "KH II", 103, 152},
+	{"bbs", "Birth by Sleep Final Mix", "BbS", 153, 197},
 }
 
 func (s *steamAPI) GetAchievements() ([]achievement, error) {
